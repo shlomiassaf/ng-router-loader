@@ -74,7 +74,9 @@ export const ROUTES: Routes = [
 ```
 > The Synchronous example uses a resource specific loader option, you can also set a global loader option.
 
-
+## Configuration 
+Please read [the documentation](https://shlomiassaf.github.io/ng-router-loader)
+ 
 # In detph 
 ## @angular/router
 The `@angular/router` provides an API for deferred `NgModule` loading, this is a simple API that accepts a function that returns an `NgModule` class.
