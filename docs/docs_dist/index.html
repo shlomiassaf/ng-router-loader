@@ -64,12 +64,12 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<p>Webpack loader for <code>NgModule</code> lazy loading / initializing using the angular router</p>
+				<p>Webpack loader for <code>NgModule</code> lazy loading using the angular router</p>
 				<h2 id="installation">Installation</h2>
 				<p><code>npm install ng-router-loader --save-dev</code></p>
 				<p>OR</p>
 				<p><code>yarn add ng-router-loader --dev</code></p>
-				<h2 id="usage">Usage</h2>
+				<h2 id="webpack-integration">Webpack integration</h2>
 				<p>Add the <code>ng-router-loader</code> to your typescript loaders chain</p>
 				<h3 id="webpack-1">Webpack 1</h3>
 				<pre><code>loader<span class="hljs-variable">s:</span> [
@@ -98,7 +98,103 @@
     }
   ]
 }
+</code></pre><h2 id="lazy-loading">Lazy Loading</h2>
+				<p>Use the <code>loadChildren</code> API with <strong>any webpack resolvable</strong> path to reference your lazy loaded angular module.
+				Use <code>#</code> as a delimiter and write the <code>NgModule</code> class name.</p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { Routes } from <span class="hljs-string">'@angular/router'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> ROUTES: Routes = [
+  { path: <span class="hljs-string">'detail'</span>, loadChildren: () =&gt; <span class="hljs-string">'../my-ng-modules/details#DetailModule'</span> },
+];
 </code></pre>
+				<blockquote>
+					<p>The delimiter is configurable.</p>
+					<p>Query parameters (details#DetailModule?loader=sync) are added after the delimiter.<br> This behaviour might change, supporting both pre &amp; after. </p>
+				</blockquote>
+				<h2 id="synchronous-loading">Synchronous Loading</h2>
+				<p>For synchronous module loading, add the sync=true as a query string value to your loadChildren string. The module will be included in your bundle and not lazy-loaded.</p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { Routes } from <span class="hljs-string">'@angular/router'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> ROUTES: Routes = [
+  { path: <span class="hljs-string">'detail'</span>, loadChildren: () =&gt; <span class="hljs-string">'../my-ng-modules/details#DetailModule?loader=sync'</span> },
+];
+</code></pre>
+				<blockquote>
+					<p>The Synchronous example uses a resource specific loader option, you can also set a global loader option.</p>
+				</blockquote>
+				<h2 id="configuration">Configuration</h2>
+				<p>Please read <a href="https://shlomiassaf.github.io/ng-router-loader">the documentation</a></p>
+				<h1 id="in-detph">In detph</h1>
+				<h2 id="-angular-router">@angular/router</h2>
+				<p>The <code>@angular/router</code> provides an API for deferred <code>NgModule</code> loading, this is a simple API that accepts a function that returns an <code>NgModule</code> class.</p>
+				<p><strong>Project structure</strong></p>
+				<pre><code>├── project-root/
+│   ├── app
+│   │   ├── app<span class="hljs-selector-class">.routes</span><span class="hljs-selector-class">.ts</span>
+│   ├── my-ng-modules
+│   │   ├── <span class="hljs-selector-tag">details</span>
+│   │   │   ├──index<span class="hljs-selector-class">.ts</span>
+│   │   │   ├──<span class="hljs-selector-tag">details</span><span class="hljs-selector-class">.module</span><span class="hljs-selector-class">.ts</span>
+│   │   │   ├──<span class="hljs-selector-tag">details</span><span class="hljs-selector-class">.component</span><span class="hljs-selector-class">.ts</span>
+</code></pre><blockquote>
+					<p>DetailModule is defined in <code>details.module.ts</code> and exported in <code>index.ts</code></p>
+				</blockquote>
+				<p><strong>app.routes.ts</strong></p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { Routes } from <span class="hljs-string">'@angular/router'</span>;
+<span class="hljs-keyword">import</span> { DetailModule } from <span class="hljs-string">'../my-ng-modules/details'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> ROUTES: Routes = [
+  { path: <span class="hljs-string">'detail'</span>, loadChildren: () =&gt; DetailModule },
+];
+</code></pre>
+				<p>The <code>@angular/router</code> will not invoke the function until the path is active, this is the how lazy loading is done.</p>
+				<h2 id="the-loader">The loader</h2>
+				<p>The example above works just fine but it includes a hard reference to the <code>DetailModule</code>.
+				Having a reference results in adding the file containing the module into the bundle.</p>
+				<p>To achieve lazy loading we need to write the code in a lazy loading code-style that webpack understand.</p>
+				<p><code>ng-router-loader</code> abstracts the complexity and provides an easy approach using a string reference.
+				In the background the loader will translate the string to code. </p>
+				<p>The string reference is the reference you use when you <code>require</code> or <code>import</code>.<br>Any string that resolves with <code>require</code> or <code>import</code> can be used and the same rules apply with 1 addition, the string reference requires must provide the name of the <code>NgModule</code> exported.</p>
+				<p>Using the same example above:</p>
+				<p><strong>app.routes.ts</strong></p>
+				<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { Routes } from <span class="hljs-string">'@angular/router'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> ROUTES: Routes = [
+  { path: <span class="hljs-string">'detail'</span>, loadChildren: () =&gt; <span class="hljs-string">'../my-ng-modules/details#DetailModule'</span> },
+];
+</code></pre>
+				<blockquote>
+					<p>It&#39;s that easy!</p>
+				</blockquote>
+				<h2 id="a-word-about-the-angular-router-loader-">A word about the <code>angular-router-loader</code></h2>
+				<p>The <code>angular-router-loader</code> (&quot;ARL&quot; from now) came out with angular final when AOT was still blurry and not enough information was out there.
+				This made it very limited in it&#39;s capabilities, while using it I reached some dead ends that <strong>ARL</strong> did&#39;nt handle.</p>
+				<p>Another issue I had is that <strong>ARL</strong> forced me to structure my app in a certain way which was not webpack oriented. A loader should be transparent to the developer.</p>
+				<p>I started fixing things and quickly understood that a rewrite is required.</p>
+				<p>Here are some of the key points:</p>
+				<ul>
+					<li><p><strong>Module resolution</strong><br><strong>ARL</strong> use the file system to resolve URIs, this makes it impossible to use the goodies webpack <code>resolve</code> provides,
+						such as <strong>barrels</strong>, <strong>aliasing</strong>, <strong>custom module directories</strong> and more, see <a href="https://webpack.js.org/configuration/resolve/">webpack resolve</a>.<br><code>ng-router-loader</code> uses webpack to resolve modules so everything webpack resolves will work.</p>
+					</li>
+					<li><p><strong>AOT re-exports</strong><br><strong>ARL</strong> can&#39;t handle re-exported <code>NgModule</code> symbols in AOT mode.<br>The example above shows the <code>index.ts</code> file exporting the <code>DetailModule</code> defined in a different
+							file, this is a tricky scenario that requires symbol tracking and it will result in an unknown module import created by <strong>ARL</strong>
+						<code>ng-router-loader</code> performs a deep metadata search to extract the right import.</p>
+						<ul>
+							<li><p><strong>Custom code generators</strong>
+								<code>ng-router-loader</code> code generation is plugin based, you can provide a custom code generator that fits your use case.</p>
+							</li>
+							<li><p><strong>Typescript based</strong></p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<h2 id="todo">TODO</h2>
+				<ul>
+					<li>Smart detection, use AST to detect ROUTE API.</li>
+				</ul>
+				<h2 id="credits">Credits</h2>
+				<p><a href="https://github.com/brandonroberts/angular-router-loader">angular-router-loader</a>
+				Learned a lot reading the code!</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

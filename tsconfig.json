@@ -21,6 +21,7 @@
     "node_modules",
     "dist",
     "demo",
-    "__codegen__"
+    "__codegen__",
+    "test/integration"
   ]
 }

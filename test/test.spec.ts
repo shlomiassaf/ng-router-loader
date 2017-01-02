@@ -274,7 +274,7 @@ describe('Loader', () => {
       .setOption('aot', true)
       .setOption('bySymbol', true)
       .setOption('genDir', '__codegen__')
-      .resolver(cwdJoin('demo/app/+detail/index.ts'));
+      .resolver(cwdJoin('test/integration/app/+detail/index.ts'));
 
 
     // Using symbol tracking to get the module file.
@@ -285,42 +285,42 @@ describe('Loader', () => {
     // If the bySymbol option is on the loader will track the file holding the module using the ngsummary JSON files.
     // it will return the module file, not the index file.
     //
-    // the lazy route in '/demo/app/app.routes.ts' is added to the app.module.ngfactory file created by
+    // the lazy route in '/test/integration/app/app.routes.ts' is added to the app.module.ngfactory file created by
     // the compiler, this is why we need to check from compiler code as well.
     it('should resolve relative module reference from compiled code', () => {
       const loader = factory
-        .resourcePath(cwdJoin('__codegen__/demo/app/app.module.ngfactory.ts'))
+        .resourcePath(cwdJoin('__codegen__/test/integration/app/app.module.ngfactory.ts'))
         .toLoader();
 
       return loader.replace(`loadChildren: './+detail#DetailModule'`)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
-          expect(result.filePath).to.eql(cwdJoin('__codegen__/demo/app/+detail/detail.module.ngfactory'));
+          expect(result.filePath).to.eql(cwdJoin('__codegen__/test/integration/app/+detail/detail.module.ngfactory'));
         });
     });
 
     it('should resolve relative module reference from source code', () => {
       const loader = factory
-        .resourcePath(cwdJoin('/demo/app/app.routes.ts'))
+        .resourcePath(cwdJoin('/test/integration/app/app.routes.ts'))
         .toLoader();
 
       return loader.replace(`loadChildren: './+detail#DetailModule'`)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
-          expect(result.filePath).to.eql(cwdJoin('__codegen__/demo/app/+detail/detail.module.ngfactory'));
+          expect(result.filePath).to.eql(cwdJoin('__codegen__/test/integration/app/+detail/detail.module.ngfactory'));
         });
     });
 
     it('should override bySymbol settings if set in a resource query', () => {
       const loader = factory
         .setOption('bySymbol', false)
-        .resourcePath(cwdJoin('/demo/app/app.routes.ts'))
+        .resourcePath(cwdJoin('/test/integration/app/app.routes.ts'))
         .toLoader();
 
       return loader.replace(`loadChildren: './+detail#DetailModule?bySymbol=true'`)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
-          expect(result.filePath).to.eql(cwdJoin('__codegen__/demo/app/+detail/detail.module.ngfactory'));
+          expect(result.filePath).to.eql(cwdJoin('__codegen__/test/integration/app/+detail/detail.module.ngfactory'));
         });
     });
   });

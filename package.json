@@ -19,10 +19,14 @@
     "lazy-loading"
   ],
   "scripts": {
-    "test": "./node_modules/.bin/mocha dist/test --recursive",
-    "watch": "./node_modules/.bin/tsc -w",
-    "demo-ngc": "./node_modules/.bin/ngc -p tsconfig.demo-ngc.json ",
-    "docs": "rm -rf docs/docs_dist && cd docs && ../node_modules/.bin/typedoc --options typedoc.json --excludePrivate"
+    "clean:ngc": "rm -rf __codegen__",
+    "clean:docs": "rm -rf docs/docs_dist",
+    "clean:dist": "rm -rf dist",
+    "test": "npm run compile_integration && npm run build && ./node_modules/.bin/mocha dist/test spec --recursive",
+    "build": "npm run clean:dist && ./node_modules/.bin/tsc",
+    "watch": "npm run build -- -w",
+    "compile_integration": "npm run clean:ngc && ./node_modules/.bin/ngc -p tsconfig.integration.json",
+    "docs": "npm run clean:docs && cd docs && ../node_modules/.bin/typedoc --options typedoc.json --excludePrivate"
   },
   "dependencies": {
     "loader-utils": "^0.2.16"

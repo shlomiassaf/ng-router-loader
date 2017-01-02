@@ -10,7 +10,7 @@
     "noEmit": true,
     "noEmitHelpers": true,
     "strictNullChecks": false,
-    "baseUrl": "./demo",
+    "baseUrl": "./test/integration",
     "paths": {
     },
     "lib": [
@@ -25,7 +25,8 @@
     "node_modules",
     "dist",
     "src",
-    "test",
+    "test/testing",
+    "test/*.spec.ts",
     "./index.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
@@ -33,7 +34,7 @@
     "useWebpackText": true
   },
   "angularCompilerOptions": {
-    "genDir": "./__codegen__"
+    "genDir": "__codegen__"
   },
   "compileOnSave": false,
   "buildOnSave": false,
