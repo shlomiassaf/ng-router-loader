@@ -22,6 +22,7 @@
     "clean:ngc": "rm -rf __codegen__",
     "clean:docs": "rm -rf docs/docs_dist",
     "clean:dist": "rm -rf dist",
+    "ci": "npm run test",
     "test": "npm run compile_integration && npm run build && ./node_modules/.bin/mocha dist/test spec --recursive",
     "build": "npm run clean:dist && ./node_modules/.bin/tsc",
     "watch": "npm run build -- -w",
