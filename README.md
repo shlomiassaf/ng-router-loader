@@ -1,4 +1,10 @@
+
 Webpack loader for `NgModule` lazy loading using the angular router
+
+
+[![Build Status](https://travis-ci.org/shlomiassaf/ng-router-loader.svg?branch=master)](https://travis-ci.org/shlomiassaf/ng-router-loader)
+[![GitHub version](https://badge.fury.io/gh/shlomiassaf%2Fng-router-loader.svg)](https://badge.fury.io/gh/shlomiassaf%2Fng-router-loader)
+
 
 ## Installation
 
