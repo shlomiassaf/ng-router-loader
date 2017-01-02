@@ -1,0 +1,489 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>RouterLoaderOptions | ng-router-loader</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">ng-router-loader</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="routerloaderoptions.html">RouterLoaderOptions</a>
+				</li>
+			</ul>
+			<h1>Interface RouterLoaderOptions</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Loader options for the <code>ng-router-loader</code>.</p>
+					</div>
+					<h2 id="resource-specific-options">Resource specific options</h2>
+					<p>Some options apply to a resource, the global option serve as the default but can be overridden in a resource URI using query parameters.</p>
+					<blockquote>
+						<p>Resource specific options are marked with the <strong>resource_override</strong> tag.</p>
+					</blockquote>
+					<h4 id="aot-mode">AOT mode</h4>
+					<p>Some of the options apply on when the <code>aot</code> flag is set to <strong>true</strong>.</p>
+					<blockquote>
+						<p>AOT specific options are marked with the <strong>aot_mode</strong> tag.</p>
+					</blockquote>
+					<h2 id="usage">Usage</h2>
+					<h4 id="webpack-1">Webpack 1</h4>
+					<pre><code class="lang-ts">{
+   test: <span class="hljs-regexp">/\.ts$/</span>,
+   loaders: [
+     <span class="hljs-string">'awesome-typescript-loader'</span>,
+     <span class="hljs-string">'ng-router-loader?aot=true&amp;genDir=codegen'</span>
+   ]
+}
+</code></pre>
+					<h4 id="webpack-2">Webpack 2</h4>
+					<p>You can use the query string as well as:</p>
+					<pre><code class="lang-ts">{
+   test: <span class="hljs-regexp">/\.ts$/</span>,
+   use: [
+     <span class="hljs-string">'awesome-typescript-loader'</span>,
+     {
+        loader: <span class="hljs-string">'ng-router-loader'</span>,
+        options: {
+          aot: <span class="hljs-literal">true</span>,
+          genDir: <span class="hljs-string">'codegen'</span>
+        }
+     }
+   ]
+}
+</code></pre>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">RouterLoaderOptions</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#aot" class="tsd-kind-icon">aot</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#bysymbol" class="tsd-kind-icon">by<wbr>Symbol</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#delimiter" class="tsd-kind-icon">delimiter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#factorysuffix" class="tsd-kind-icon">factory<wbr>Suffix</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#gendir" class="tsd-kind-icon">gen<wbr>Dir</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#inline" class="tsd-kind-icon">inline</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#loader" class="tsd-kind-icon">loader</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="routerloaderoptions.html#modulesuffix" class="tsd-kind-icon">module<wbr>Suffix</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="aot" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> aot</h3>
+					<div class="tsd-signature tsd-kind-icon">aot<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L59">options.ts:59</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Enable support for AOT compiled code.
+							If you are bundling AOT compiled code (.ngfactory) set this to true</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p>false</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="bysymbol" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> by<wbr>Symbol</h3>
+					<div class="tsd-signature tsd-kind-icon">by<wbr>Symbol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L147">options.ts:147</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Resolve ngfactory modules and verify they exist, if not track the symbol and search for the ngfactory
+							that exports the symbol.</p>
+						</div>
+						<p>AOT compilation emit ngfactory files only for NgModule, Component and Directive.
+						If a module does not have one of those the compiler will not create an ngfactory file for it.</p>
+						<p>In webpack it is a common practice to use directories as packages (barrel pattern) having an
+						index file exporting what&#39;s needed.</p>
+						<p>When a URI reference a module (ModA) that:</p>
+						<ul>
+							<li>export an NgModule defined in an other module (ModB) and;</li>
+							<li>ModA has no NgModule, Component or Directive defined inside it</li>
+						</ul>
+						<p>The resolved file will &quot;ModA.ngfactory&quot;, even though it does not exists.
+							When bySymbol is true the loader will use the metadata in &quot;ngsummary.json&quot; files to lookup the
+						first ngfactory file that exports ModB, it will then use it as the resolved URI.</p>
+						<p>You can override this option in a specific resource by setting the bySymbol property in a resource query.</p>
+						<dl class="tsd-comment-tags">
+							<dt>resource_override</dt>
+							<dd></dd>
+							<dt>aot_mode</dt>
+							<dd></dd>
+							<dt>default</dt>
+							<dd><p>true</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="debug" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> debug</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L121">options.ts:121</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="delimiter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> delimiter</h3>
+					<div class="tsd-signature tsd-kind-icon">delimiter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L52">options.ts:52</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A separator used to identify the NgModule class name in the URI.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p>&#39;#&#39;</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="factorysuffix" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> factory<wbr>Suffix</h3>
+					<div class="tsd-signature tsd-kind-icon">factory<wbr>Suffix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L75">options.ts:75</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The suffix used by the angular compiler to mark compiled version of source tree NgModule class.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>aot_mode</dt>
+							<dd></dd>
+							<dt>default</dt>
+							<dd><p>&#39;NgFactory&#39;</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="gendir" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> gen<wbr>Dir</h3>
+					<div class="tsd-signature tsd-kind-icon">gen<wbr>Dir<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L112">options.ts:112</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The destination of compiled files created by the angular compiler-cli.
+							The directory is resolved relative to the current working directory (process.cwd())</p>
+						</div>
+						<p>When genDir is empty or &quot;.&quot; the destination is the project root and factory files are saved along side the source tree.</p>
+						<p>IMPORTANT NOTE:
+							The compiler-cli takes this value from the tsconfig file @ &quot;angularCompilerOptions.genDir&quot; and
+							resolve the destination with &quot;genDir&quot; relative to the &quot;tsconfig&quot; file.
+							Webpack (hence the loader) run on a different process so it does not know about that &quot;tsconfig&quot;.
+						If your setup is complex you need to make sure that the 2 &quot;genDir&quot;s resolve to the same directory according to the logic described here.</p>
+						<p>The best scenario is when &quot;tsconfig.json&quot; is in the project root and webpack is executed from the project root.
+						In this case the &quot;genDir&quot; should be identical to the &quot;genDir&quot; value in &quot;tsconfig.json&quot;</p>
+						<dl class="tsd-comment-tags">
+							<dt>aot_mode</dt>
+							<dd></dd>
+							<dt>default</dt>
+							<dd><p>&#39;&#39;</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="inline" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> inline</h3>
+					<div class="tsd-signature tsd-kind-icon">inline<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L119">options.ts:119</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If false outputs a pretty code</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p>true</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="loader" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> loader</h3>
+					<div class="tsd-signature tsd-kind-icon">loader<span class="tsd-signature-symbol">:</span> <a href="../globals.html#built_in_loaders" class="tsd-signature-type">BUILT_IN_LOADERS</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L92">options.ts:92</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The code generator to use when replacing the URI with a callback.</p>
+						</div>
+						<p>There are 3 built in code generators:</p>
+						<ul>
+							<li>sync: The module will be part of the bundle (lazy initializing but NOT lazy loading)</li>
+							<li>async-require: The module will load in a separate bundle, using webpack&#39;s <code>require.ensure</code> feature (support chunkName)</li>
+							<li><p>async-system: The module will load in a separate bundle using System.import</p>
+								<p>Note: System.import is deprecated in Webpack 2, will be removed in webpack 3 (<a href="https://github.com/webpack/webpack/releases/tag/v2.1.0-beta.28">https://github.com/webpack/webpack/releases/tag/v2.1.0-beta.28</a>)</p>
+							</li>
+						</ul>
+						<p>You can override the loader in a specific resource by setting the loader in a resource query.</p>
+						<dl class="tsd-comment-tags">
+							<dt>resource_override</dt>
+							<dd></dd>
+							<dt>default</dt>
+							<dd><p>&#39;async-require&#39;</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="modulesuffix" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> module<wbr>Suffix</h3>
+					<div class="tsd-signature tsd-kind-icon">module<wbr>Suffix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shlomiassaf/ng-router-loader/blob/3699aa3/src/options.ts#L67">options.ts:67</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The suffix used by the angular compiler to mark compiled version of source tree modules.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>aot_mode</dt>
+							<dd></dd>
+							<dt>default</dt>
+							<dd><p>&#39;.ngfactory&#39;</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-interface">
+						<a href="routeresourceoptions.html" class="tsd-kind-icon">Route<wbr>Resource<wbr>Options</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="routerloaderoptions.html" class="tsd-kind-icon">Router<wbr>Loader<wbr>Options</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#aot" class="tsd-kind-icon">aot</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#bysymbol" class="tsd-kind-icon">by<wbr>Symbol</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#debug" class="tsd-kind-icon">debug</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#delimiter" class="tsd-kind-icon">delimiter</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#factorysuffix" class="tsd-kind-icon">factory<wbr>Suffix</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#gendir" class="tsd-kind-icon">gen<wbr>Dir</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#inline" class="tsd-kind-icon">inline</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#loader" class="tsd-kind-icon">loader</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="routerloaderoptions.html#modulesuffix" class="tsd-kind-icon">module<wbr>Suffix</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#built_in_loaders" class="tsd-kind-icon">BUILT_<wbr>IN_<wbr>LOADERS</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="../globals.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="../globals.html#default_resource_options" class="tsd-kind-icon">DEFAULT_<wbr>RESOURCE_<wbr>OPTIONS</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

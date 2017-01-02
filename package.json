@@ -1,0 +1,59 @@
+{
+  "name": "ng-router-loader",
+  "version": "1.0.0",
+  "description": "Webpack loader for `NgModule` lazy loading using the angular router",
+  "author": "Shlomi Assaf <shlomiasaf@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shlomiassaf/ng-router-loader.git"
+  },
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "keywords": [
+    "webpack",
+    "loader",
+    "angular",
+    "aot",
+    "router",
+    "lazy-loading"
+  ],
+  "scripts": {
+    "test": "./node_modules/.bin/mocha dist/test --recursive",
+    "watch": "./node_modules/.bin/tsc -w",
+    "demo-ngc": "./node_modules/.bin/ngc -p tsconfig.demo-ngc.json ",
+    "docs": "rm -rf docs/docs_dist && cd docs && ../node_modules/.bin/typedoc --options typedoc.json --excludePrivate"
+  },
+  "dependencies": {
+    "loader-utils": "^0.2.16"
+  },
+  "bugs": {
+    "url": "https://github.com/shlomiassaf/ng-router-loader/issues"
+  },
+  "homepage": "https://github.com/shlomiassaf/ng-router-loader#readme",
+  "devDependencies": {
+    "@angular/common": "~2.4.1",
+    "@angular/compiler": "~2.4.1",
+    "@angular/compiler-cli": "~2.4.1",
+    "@angular/core": "~2.4.1",
+    "@angular/forms": "~2.4.1",
+    "@angular/http": "~2.4.1",
+    "@angular/material": "2.0.0-beta.1",
+    "@angular/platform-browser": "~2.4.1",
+    "@angular/platform-browser-dynamic": "~2.4.1",
+    "@angular/platform-server": "~2.4.1",
+    "@angular/router": "~3.4.1",
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.35",
+    "@types/node": "^6.0.55",
+    "@types/webpack": "^2.1.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "rxjs": "^5.0.2",
+    "ts-node": "^2.0.0",
+    "typedoc": "^0.5.3",
+    "typedoc-markdown-theme": "^0.0.4",
+    "typescript": "2.0.10",
+    "zone.js": "~0.7.4"
+  }
+}
