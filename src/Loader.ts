@@ -5,8 +5,6 @@ import * as path from 'path';
 import { RouterLoaderOptions, RouteResourceOptions, DEFAULT_OPTIONS } from './options';
 import { RouteDestination } from './RouteModule';
 
-const LOAD_CHILDREN_RE = /loadChildren[\s]*:[\s]*['|"](.*?)['|"]/gm;
-
 export interface ReplaceResult {
   /**
    * Debug mode
@@ -56,18 +54,31 @@ export class Loader {
 
   constructor( private webpack: any) { }
 
-  replace(source: string): Promise<ReplaceResult | undefined> {
-    const match = LOAD_CHILDREN_RE.exec(source);
+  replace(source: string): Promise<[ReplaceResult] | undefined> {
+    //TODO: Move this regex async chaos into AST
 
-    if (match) {
-      return this.replaceSource(match[0], match[1])
-        .then(result => Object.assign(result, {
-          source: source.replace(LOAD_CHILDREN_RE, () => result.replacement),
-        }));
+    const LOAD_CHILDREN_RE = /loadChildren[\s]*:[\s]*['|"](.*?)['|"]/gm;
+    const promises = [];
+    let match = LOAD_CHILDREN_RE.exec(source);
+
+    while (match) {
+      const p = this.replaceSource(match[0], match[1])
+        .then(result => {
+          source = source.replace(result.match, result.replacement);
+          return Object.assign(result, {
+            source
+          });
+        });
+
+      promises.push(p);
+      match = LOAD_CHILDREN_RE.exec(source);
+    }
+
+    if (promises.length > 0) {
+      return Promise.all(promises);
     } else {
       return Promise.resolve(undefined);
     }
-
   }
 
   private resolve(context: string, resourceUri: string): Promise<string> {

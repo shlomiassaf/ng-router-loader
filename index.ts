@@ -10,22 +10,23 @@ function loader(source, sourcemap) {
   const l = new Loader.Loader(this);
 
   l.replace(source)
-    .then( result => {
-      if (result) {
-        source = result.source;
+    .then( results => {
+      if (results) {
+        results.forEach( result => {
+          source = result.source;
 
-        if (result.debug) {
-          const d = [
-            '================================== ng-router-loader ==================================',
-            `Importer:    ${this.resourcePath}`,
-            `Raw Request: ${result.match}`,
-            `Replacement: ${result.replacement}`,
-            '======================================================================================'
-          ];
-          console.log(d.join('\n'));
-        }
+          if (result.debug) {
+            const d = [
+              '================================== ng-router-loader ==================================',
+              `Importer:    ${this.resourcePath}`,
+              `Raw Request: ${result.match}`,
+              `Replacement: ${result.replacement}`,
+              '======================================================================================'
+            ];
+            console.log(d.join('\n'));
+          }
+        });
       }
-
       this.callback(null, source, sourcemap);
     })
     .catch( err => this.callback(err) );

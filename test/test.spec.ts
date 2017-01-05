@@ -14,11 +14,15 @@ function cwdJoin(...paths: string[]): string {
   return Path.join(process.cwd(), ...paths);
 }
 
+function mapToZero(results: ReplaceResult[]): ReplaceResult | undefined {
+  return results ? results[0] : undefined;
+}
 
 describe('Loader', () => {
 
   it('should return undefined when source has no string literal children', () => {
     return new Loader(null).replace("")
+      .then(mapToZero)
       .then( (result: ReplaceResult) => {
         expect(result).to.be.undefined;
       });
@@ -29,6 +33,7 @@ describe('Loader', () => {
       const loader = wpFactory().resourcePath('/pc/my-project/root-item.ts').toLoader();
 
       return loader.replace("loadChildren: '../level-1/level-1-item.ts?bySymbol=false'")
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(objToKvpString(loader.query)).to.eql(objToKvpString(options.DEFAULT_OPTIONS));
         });
@@ -45,6 +50,7 @@ describe('Loader', () => {
 
 
       return loader.replace("loadChildren: '../level-1/level-1-item.ts?bySymbol=false'")
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(loader.query.delimiter).to.equal('!');
           expect(loader.query.aot).to.equal(true);
@@ -67,6 +73,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModule');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/child.module'));
@@ -80,6 +87,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModule');
           expect(result.filePath).to.eql(cwdJoin('src/new-branch/child-module/child.module'));
@@ -93,6 +101,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModule');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/index'));
@@ -114,6 +123,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('compiled/src/app/module-container/child-module/child.module.ngfactory'));
@@ -127,6 +137,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('compiled/src/app/module-container/child-module/child.module.ngfactory'));
@@ -140,6 +151,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('compiled/src/new-branch/child-module/child.module.ngfactory'));
@@ -153,6 +165,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('compiled/src/new-branch/child-module/child.module.ngfactory'));
@@ -166,6 +179,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('compiled/src/app/module-container/child-module/index.ngfactory'));
@@ -179,6 +193,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('compiled/src/app/module-container/child-module/index.ngfactory'));
@@ -200,6 +215,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/child.module.ngfactory'));
@@ -212,6 +228,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/child.module.ngfactory'));
@@ -225,6 +242,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('src/new-branch/child-module/child.module.ngfactory'));
@@ -237,6 +255,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('src/new-branch/child-module/child.module.ngfactory'));
@@ -250,6 +269,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/index.ngfactory'));
@@ -262,6 +282,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/index.ngfactory'));
@@ -293,6 +314,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: './+detail#DetailModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('__codegen__/test/integration/app/+detail/detail.module.ngfactory'));
@@ -305,6 +327,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: './+detail#DetailModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('__codegen__/test/integration/app/+detail/detail.module.ngfactory'));
@@ -318,6 +341,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: './+detail#DetailModule?bySymbol=true'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
           expect(result.filePath).to.eql(cwdJoin('__codegen__/test/integration/app/+detail/detail.module.ngfactory'));
@@ -340,6 +364,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.replacement).to.eql(syncCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
         });
@@ -351,6 +376,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.replacement).to.eql(ensureCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
         });
@@ -362,6 +388,7 @@ describe('Loader', () => {
         .toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.replacement).to.eql(systemCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
         });
@@ -376,6 +403,7 @@ describe('Loader', () => {
       Loader.setCodeGen('sync-custom', custom);
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule?loader=sync-custom'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.replacement).to.eql('This is a test!');
         });
@@ -385,6 +413,7 @@ describe('Loader', () => {
       const loader = factory.toLoader();
 
       return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule?loader=made-up'`)
+        .then(mapToZero)
         .then( (result: ReplaceResult) => {
           throw new Error('Mock error - should not get here');
         })
