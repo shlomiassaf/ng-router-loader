@@ -1,4 +1,5 @@
 const loaderUtils = require('loader-utils');
+import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -127,6 +128,8 @@ export class Loader {
           filePath = filePath.substr(0, filePath.lastIndexOf('.'));
         }
 
+        filePath = this.normalize(filePath);
+
         const replacement = codeGen(filePath, moduleName, this.query, route.options);
 
         return {
@@ -139,6 +142,16 @@ export class Loader {
           replacement
         }
       });
+  }
+
+  private normalize(filePath: string): string {
+    let normalizedPath = path.normalize(filePath);
+
+    if (os.platform() === 'win32') {
+      normalizedPath = normalizedPath.replace(/\\/g, '\\\\');
+    }
+
+    return normalizedPath;
   }
 
   private trackSymbolRootDecl(absPath: string, moduleName: string): string {
