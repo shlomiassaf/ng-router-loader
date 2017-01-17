@@ -2,7 +2,7 @@ import * as Path from 'path';
 import { expect } from 'chai';
 import '../index'; // this will load the built in code generators.
 import * as options from '../src/options';
-import { syncCodeGen, ensureCodeGen, systemCodeGen } from '../src/builtin_codegens';
+import { syncCodeGen, ensureCodeGen, systemCodeGen, importCodeGen } from '../src/builtin_codegens';
 import { Loader, ReplaceResult } from '../src/Loader';
 import { wpFactory, WebpackMockFactory } from './testing/WebpackMock';
 
@@ -393,6 +393,19 @@ describe('Loader', () => {
           expect(result.replacement).to.eql(systemCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
         });
     });
+
+    it('should output async-import codegen', () => {
+      const loader = factory
+        .setOption('loader', 'async-import')
+        .toLoader();
+
+      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+        .then(mapToZero)
+        .then( (result: ReplaceResult) => {
+          expect(result.replacement).to.eql(importCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
+        });
+    });
+
 
     it('should output a custom codegen', () => {
       const loader = factory.toLoader();
