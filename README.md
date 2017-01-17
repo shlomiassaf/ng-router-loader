@@ -13,6 +13,18 @@ OR
 
 `yarn add ng-router-loader --dev`
 
+# V 2.0.0 BREAKING CHANGES:
+Version 2.0.0 introduce support for the [import()](https://github.com/tc39/proposal-dynamic-import) construct.  
+`import()` is [not yet implemented](https://github.com/Microsoft/TypeScript/issues/12364) in TypeScript. 
+TypeScript does not ignore it but transpile it to something else which breaks the code.
+
+To use the `import()` construct the loader must run **AFTER** the typescript transpilation process, 
+this is after the `awesome-typescript-loader` in the example below. 
+
+Running after TS also means all code generators now emit ES5 code.
+
+> Webpack 1 users can't use `async-import` as it's not supported in version 1.  
+Webpack 2 users can use it as long as they are running on webpack > 2.1.0 beta28
 
 ## Webpack integration
 
@@ -24,8 +36,8 @@ loaders: [
   {
     test: /\.ts$/,
     loaders: [
-      'awesome-typescript-loader',
-      'ng-router-loader'
+       'ng-router-loader',
+      'awesome-typescript-loader'
     ]
   }
 ]
@@ -38,13 +50,13 @@ module: {
     {
        test: /\.ts$/,
        use: [
-         'awesome-typescript-loader',
-         {
-            loader: 'ng-router-loader' 
-            options: {
-             /* ng-router-loader options */
-            }
-         }         
+       {
+           loader: 'ng-router-loader' 
+           options: {
+            /* ng-router-loader options */
+           }
+        } ,
+         'awesome-typescript-loader'          
        ]
     }
   ]
