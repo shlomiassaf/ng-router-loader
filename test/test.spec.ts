@@ -14,17 +14,20 @@ function cwdJoin(...paths: string[]): string {
   return Path.join(process.cwd(), ...paths);
 }
 
-function mapToZero(results: ReplaceResult[]): ReplaceResult | undefined {
-  return results ? results[0] : undefined;
+function mapToZero(results: { debug: boolean, source: string, results: Array<ReplaceResult> }): ReplaceResult | undefined {
+  return results.results[0];
+}
+
+function genCode(loadChildren: string): string {
+  return `const ROUTES = {path: '', loadChildren: '${loadChildren}' }`;
 }
 
 describe('Loader', () => {
 
   it('should return undefined when source has no string literal children', () => {
     return new Loader(null).replace("")
-      .then(mapToZero)
-      .then( (result: ReplaceResult) => {
-        expect(result).to.be.undefined;
+      .then( result => {
+        expect(result.results.length).to.equal(0);
       });
   });
 
@@ -32,9 +35,8 @@ describe('Loader', () => {
     it('should handle empty query by loading default options', () => {
       const loader = wpFactory().resourcePath('/pc/my-project/root-item.ts').toLoader();
 
-      return loader.replace("loadChildren: '../level-1/level-1-item.ts?bySymbol=false'")
-        .then(mapToZero)
-        .then( (result: ReplaceResult) => {
+      return loader.replace(genCode('../level-1/level-1-item.ts?bySymbol=false'))
+        .then( result => {
           expect(objToKvpString(loader.query)).to.eql(objToKvpString(options.DEFAULT_OPTIONS));
         });
     });
@@ -49,9 +51,8 @@ describe('Loader', () => {
         .toLoader();
 
 
-      return loader.replace("loadChildren: '../level-1/level-1-item.ts?bySymbol=false'")
-        .then(mapToZero)
-        .then( (result: ReplaceResult) => {
+      return loader.replace(genCode('../level-1/level-1-item.ts?bySymbol=false'))
+        .then( result => {
           expect(loader.query.delimiter).to.equal('!');
           expect(loader.query.aot).to.equal(true);
           expect(loader.query.moduleSuffix).to.equal('test');
@@ -72,11 +73,10 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
-        .then(mapToZero)
-        .then( (result: ReplaceResult) => {
-          expect(result.moduleName).to.equal('ChildModule');
-          expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/child.module'));
+      return loader.replace(genCode('../module-container/child-module/child.module#ChildModule'))
+        .then( results => {
+          expect(results.results[0].moduleName).to.equal('ChildModule');
+          expect(results.results[0].filePath).to.eql(cwdJoin('src/app/module-container/child-module/child.module'));
         });
     });
 
@@ -86,7 +86,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/new-branch/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../../../../new-branch/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModule');
@@ -100,11 +100,24 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/index.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModule');
           expect(result.filePath).to.eql(cwdJoin('src/app/module-container/child-module/index'));
+        });
+    });
+
+    it('should not replace a "loadChildren" expression that is not a string', () => {
+      const loader = factory
+        .resourcePath(cwdJoin('src/app/app.routes.ts'))
+        .resolver(cwdJoin('src/app/module-container/child-module/index.ts'))
+        .toLoader();
+
+      return loader.replace(`const ROUTES = {path: '', loadChildren: function() { return {}; } }`)
+        .then(mapToZero)
+        .then( (result: ReplaceResult) => {
+          expect(result).to.be.undefined;
         });
     });
   });
@@ -122,7 +135,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../module-container/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -136,7 +149,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../module-container/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -150,7 +163,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/new-branch/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../../../../new-branch/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -164,7 +177,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/new-branch/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../../../../new-branch/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -178,7 +191,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/index.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -192,7 +205,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/index.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -214,7 +227,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('src/app/app.routes.ngfactory.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../module-container/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -227,7 +240,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('src/app/app.routes.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../module-container/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../module-container/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -241,7 +254,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/new-branch/child-module/child.module.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../../../../new-branch/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -254,7 +267,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('src/app/deep/deeper/deeper-still/app.routes.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: '../../../../new-branch/child-module/child.module#ChildModule'`)
+      return loader.replace(genCode('../../../../new-branch/child-module/child.module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -268,7 +281,7 @@ describe('Loader', () => {
         .resolver(cwdJoin('src/app/module-container/child-module/index.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -281,7 +294,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('src/app/app.routes.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('ChildModuleNgFactory');
@@ -313,7 +326,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('__codegen__/test/integration/app/app.module.ngfactory.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: './+detail#DetailModule'`)
+      return loader.replace(genCode('./+detail#DetailModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
@@ -326,7 +339,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('/test/integration/app/app.routes.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: './+detail#DetailModule'`)
+      return loader.replace(genCode('./+detail#DetailModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
@@ -340,7 +353,7 @@ describe('Loader', () => {
         .resourcePath(cwdJoin('/test/integration/app/app.routes.ts'))
         .toLoader();
 
-      return loader.replace(`loadChildren: './+detail#DetailModule?bySymbol=true'`)
+      return loader.replace(genCode('./+detail#DetailModule?bySymbol=true'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           expect(result.moduleName).to.equal('DetailModuleNgFactory');
@@ -363,10 +376,10 @@ describe('Loader', () => {
         .setOption('loader', 'sync')
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
-          expect(result.replacement).to.eql(syncCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
+          expect(result.replacement).to.eql(`function() { return require('${cwdJoin('src/app/module-container/child-module/index')}')['ChildModule']; }`);
         });
     });
 
@@ -375,10 +388,10 @@ describe('Loader', () => {
         .setOption('loader', 'async-require')
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
-          expect(result.replacement).to.eql(ensureCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
+          expect(result.replacement).to.eql(`function() { return new Promise(function (resolve) {  require.ensure([], function (require) {    resolve(require('${cwdJoin('src/app/module-container/child-module/index')}')['ChildModule']);  });})}`);
         });
     });
 
@@ -387,10 +400,10 @@ describe('Loader', () => {
         .setOption('loader', 'async-system')
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
-          expect(result.replacement).to.eql(systemCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
+          expect(result.replacement).to.eql(`function() { return System.import('${cwdJoin('src/app/module-container/child-module/index')}').then( function(module) { return module['ChildModule']; } ); }`);
         });
     });
 
@@ -399,10 +412,10 @@ describe('Loader', () => {
         .setOption('loader', 'async-import')
         .toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
-          expect(result.replacement).to.eql(importCodeGen(result.filePath, result.moduleName, loader.query, result.resourceQuery));
+          expect(result.replacement).to.eql(`function() { return import('${cwdJoin('src/app/module-container/child-module/index')}')  .then( function(module) { return module['ChildModule']; } ); }`);
         });
     });
 
@@ -410,22 +423,22 @@ describe('Loader', () => {
     it('should output a custom codegen', () => {
       const loader = factory.toLoader();
       function custom(file: string, module: string): string {
-        return 'This is a test!';
+        return 'function custom() { return ""; }';
       }
 
       Loader.setCodeGen('sync-custom', custom);
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule?loader=sync-custom'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule?loader=sync-custom'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
-          expect(result.replacement).to.eql('This is a test!');
+          expect(result.replacement).to.eql('function() { return ""; }');
         });
     });
 
     it('should throw on unknown loader', () => {
       const loader = factory.toLoader();
 
-      return loader.replace(`loadChildren: 'app/module-container/child-module#ChildModule?loader=made-up'`)
+      return loader.replace(genCode('app/module-container/child-module#ChildModule?loader=made-up'))
         .then(mapToZero)
         .then( (result: ReplaceResult) => {
           throw new Error('Mock error - should not get here');

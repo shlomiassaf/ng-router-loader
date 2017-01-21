@@ -145,6 +145,7 @@ export interface RouterLoaderOptions {
    * @default true
    */
   bySymbol?: boolean;
+
 }
 
 /**

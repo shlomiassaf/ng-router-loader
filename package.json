@@ -1,6 +1,6 @@
 {
   "name": "ng-router-loader",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Webpack loader for `NgModule` lazy loading using the angular router",
   "author": "Shlomi Assaf <shlomiasaf@gmail.com>",
   "license": "MIT",
@@ -20,6 +20,7 @@
   ],
   "scripts": {
     "clean:ngc": "rm -rf __codegen__",
+    "clean:webpack": "rm -rf __webpack_dist__",
     "clean:docs": "rm -rf docs/docs_dist",
     "clean:dist": "rm -rf dist",
     "ci": "npm run test",
@@ -27,10 +28,12 @@
     "build": "npm run clean:dist && ./node_modules/.bin/tsc",
     "watch": "npm run build -- -w",
     "compile_integration": "npm run clean:ngc && ./node_modules/.bin/ngc -p tsconfig.integration.json",
+    "build:integration": "npm run clean:ngc && npm run clean:webpack && ./node_modules/.bin/webpack --config webpack.integration.js --progress --profile",
     "docs": "npm run clean:docs && cd docs && ../node_modules/.bin/typedoc --options typedoc.json --excludePrivate"
   },
   "dependencies": {
-    "loader-utils": "^0.2.16"
+    "loader-utils": "^0.2.16",
+    "recast": "^0.11.20"
   },
   "bugs": {
     "url": "https://github.com/shlomiassaf/ng-router-loader/issues"
@@ -51,14 +54,17 @@
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.35",
     "@types/node": "^6.0.55",
-    "@types/webpack": "^2.1.0",
+    "@types/webpack": "^2.2.2",
+    "awesome-typescript-loader": "~3.0.0-beta.18",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
+    "ngc-webpack": "^1.1.2",
     "rxjs": "^5.0.2",
     "ts-node": "^2.0.0",
     "typedoc": "^0.5.3",
     "typedoc-markdown-theme": "^0.0.4",
-    "typescript": "2.0.10",
+    "typescript": "2.1.5",
+    "webpack": "2.2.0",
     "zone.js": "~0.7.4"
   }
 }

@@ -26,6 +26,10 @@ Running after TS also means all code generators now emit ES5 code.
 > Webpack 1 users can't use `async-import` as it's not supported in version 1.  
 Webpack 2 users can use it as long as they are running on webpack > 2.1.0 beta28
 
+# V 2.1.0 BREAKING CHANGES:
+`ng-router-loader` now uses AST to parse the module.  
+Using AST provides a more accurate detection of the `loadChildren` property.
+
 ## Webpack integration
 
 Add the `ng-router-loader` to your typescript loaders chain
@@ -176,7 +180,7 @@ Here are some of the key points:
    - **Typescript based**
    
 ## TODO
-  - Smart detection, use AST to detect ROUTE API.
+  [x] Smart detection, use AST to detect ROUTE API.
 
 ## Credits
 

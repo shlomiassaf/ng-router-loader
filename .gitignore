@@ -51,3 +51,4 @@ jspm_packages
 .idea
 dist
 __codegen__
+__webpack_dist__

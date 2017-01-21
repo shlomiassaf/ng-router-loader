@@ -2,16 +2,13 @@ const loaderUtils = require('loader-utils');
 import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
+import { loader } from 'webpack';
 
 import { RouterLoaderOptions, RouteResourceOptions, DEFAULT_OPTIONS } from './options';
 import { RouteDestination } from './RouteModule';
+import { createTransformerController } from './ast';
 
 export interface ReplaceResult {
-  /**
-   * Debug mode
-   */
-  debug: boolean;
-
   /**
    * The resolved path
    */
@@ -29,11 +26,6 @@ export interface ReplaceResult {
   resourceQuery: RouteResourceOptions;
 
   /**
-   * The updated source file.
-   */
-  source: string;
-
-  /**
    * The content remove from the source file.
    */
   match: string;
@@ -41,44 +33,52 @@ export interface ReplaceResult {
   /**
    * The content inserted into the source file.
    */
-  replacement: string
+  replacement: string;
 }
 
+/**
+ * Loader code generator type, can return the code as string or as an esprima FunctionDeclaration
+ */
 export type  LoaderCodeGen = Function & (
-    ( (file: string, module: string) => string )
-  | ( (file: string, module: string, loaderOptions: RouterLoaderOptions) => string )
+    ( (file: string, module: string) => string | any )
+  | ( (file: string, module: string, loaderOptions: RouterLoaderOptions) => any )
   | ( (file: string, module: string, loaderOptions: RouterLoaderOptions, resourceOptions: RouteResourceOptions) => string )
   )
+
+const LOAD_CHILDREN_RE = /loadChildren[\s]*:[\s]*['|"].+?['|"]/;
 
 export class Loader {
   public query: RouterLoaderOptions;
 
-  constructor( private webpack: any) { }
+  constructor( private webpack: loader.LoaderContext) { }
 
-  replace(source: string): Promise<[ReplaceResult] | undefined> {
-    //TODO: Move this regex async chaos into AST
+  replace(source: string): Promise<{ debug: boolean, source: string, results: Array<ReplaceResult> }> {
+    // TODO: Check what is faster: match -> match found -> AST    OR just AST for all modules.
+    const match = LOAD_CHILDREN_RE.exec(source);
 
-    const LOAD_CHILDREN_RE = /loadChildren[\s]*:[\s]*['|"](.*?)['|"]/gm;
-    const promises = [];
-    let match = LOAD_CHILDREN_RE.exec(source);
+    // let match = source.match(/loadChildren[\s]*:[\s]*['|"](.*?)['|"]/);
+    if (match) {
+      this.query = Object.assign({}, DEFAULT_OPTIONS, loaderUtils.parseQuery(this.webpack.query));
+      const transformController = createTransformerController(source);
 
-    while (match) {
-      const p = this.replaceSource(match[0], match[1])
-        .then(result => {
-          source = source.replace(result.match, result.replacement);
-          return Object.assign(result, {
-            source
-          });
+      const promises = transformController.transformers
+        .map(exp => this.replaceSource(exp.expLiteral, exp.expLiteral)
+          .then( result => {
+            result.replacement = exp.transform(result.replacement);
+            return result;
+          })
+      );
+
+      return Promise.all(promises)
+        .then( results => {
+          return {
+            debug: typeof this.query.debug !== 'boolean' ? this.webpack.debug : this.query.debug,
+            source: transformController.getCode(!this.query.inline),
+            results
+          }
         });
-
-      promises.push(p);
-      match = LOAD_CHILDREN_RE.exec(source);
-    }
-
-    if (promises.length > 0) {
-      return Promise.all(promises);
     } else {
-      return Promise.resolve(undefined);
+      return Promise.resolve({source, results: []});
     }
   }
 
@@ -95,8 +95,6 @@ export class Loader {
   }
 
   private replaceSource(match: string, loadChildrenPath: string): Promise<ReplaceResult> {
-    this.query = Object.assign({}, DEFAULT_OPTIONS, loaderUtils.parseQuery(this.webpack.query));
-
     const route = new RouteDestination(loadChildrenPath, this.webpack.resourcePath, this.query);
 
     const codeGen = Loader.LOADER_CODEGEN_MAP.get(route.options.loader);
@@ -130,14 +128,12 @@ export class Loader {
 
         filePath = this.normalize(filePath);
 
-        const replacement = codeGen(filePath, moduleName, this.query, route.options);
+        const replacement = (codeGen as any)(filePath, moduleName, this.query, route.options);
 
         return {
-          debug: typeof this.query.debug !== 'boolean' ? this.webpack.debug : this.query.debug,
           filePath,
           moduleName,
           resourceQuery: route.options,
-          source: undefined,
           match,
           replacement
         }

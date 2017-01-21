@@ -9,13 +9,11 @@ function loader(source, sourcemap) {
 
   const l = new Loader.Loader(this);
 
-  l.replace(source)
-    .then( results => {
-      if (results) {
-        results.forEach( result => {
-          source = result.source;
-
-          if (result.debug) {
+  try { // l.replace can throw.
+    l.replace(source)
+      .then( results => {
+        results.results.forEach( result => {
+          if (results.debug) {
             const d = [
               '================================== ng-router-loader ==================================',
               `Importer:    ${this.resourcePath}`,
@@ -26,10 +24,12 @@ function loader(source, sourcemap) {
             console.log(d.join('\n'));
           }
         });
-      }
-      this.callback(null, source, sourcemap);
-    })
-    .catch( err => this.callback(err) );
+        this.callback(null, results.source, sourcemap);
+      })
+      .catch( err => this.callback(err) );
+  } catch (err) {
+    this.call(err);
+  }
 }
 
 module loader {

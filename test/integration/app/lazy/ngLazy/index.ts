@@ -1,0 +1,1 @@
+export { LazyModule } from './module';

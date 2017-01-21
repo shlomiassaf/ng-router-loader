@@ -64,7 +64,7 @@ export class WebpackMockFactory {
   }
 
   toLoader(): Loader {
-    return new Loader(this.toWebpack());
+    return new Loader(this.toWebpack() as any);
   }
 }
 
