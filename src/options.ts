@@ -145,6 +145,14 @@ export interface RouterLoaderOptions {
    * @default true
    */
   bySymbol?: boolean;
+  /**
+   * For complex folder structures it could be necessary to set de full path of the tsconfig file
+   * If your setup is complex  sometimes resolving the 2 "genDir"s  to the same directory is not enough
+   * If you don't set this option, the tsconfig will be relative to the process.cwd() directory
+   * @aot_mode
+   * @default 'process.cwd()'
+   */
+  tsconfigDir?: string;
 }
 
 /**
@@ -190,7 +198,8 @@ export const DEFAULT_OPTIONS: RouterLoaderOptions = {
   loader: 'async-require',
   genDir: '',
   inline: true,
-  bySymbol: true
+  bySymbol: true,
+  tsconfigDir: process.cwd()
 };
 
 export const DEFAULT_RESOURCE_OPTIONS: RouteResourceOptions = {
