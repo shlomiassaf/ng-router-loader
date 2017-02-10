@@ -181,8 +181,8 @@ export class Loader {
    */
   private sourceTreeToGenDir(absFilePath: string): string {
     if (this.query.genDir && this.query.genDir !== '.') {
-      const relativeNgModulePath = path.relative(process.cwd(), absFilePath);
-      return path.join(path.resolve(process.cwd(), this.query.genDir), relativeNgModulePath);
+      const relativeNgModulePath = path.relative(this.query.tsconfigDir, absFilePath);
+      return path.join(path.resolve(this.query.tsconfigDir, this.query.genDir), relativeNgModulePath);
     } else {
       return absFilePath;
     }
@@ -190,8 +190,8 @@ export class Loader {
 
   private genDirToSourceTree(absFilePath: string): string {
     if (this.query.genDir && this.query.genDir !== '.') {
-      const relativeNgModulePath = path.relative(path.resolve(process.cwd(), this.query.genDir), absFilePath);
-      return path.join(process.cwd(), relativeNgModulePath);
+      const relativeNgModulePath = path.relative(path.resolve(this.query.tsconfigDir, this.query.genDir), absFilePath);
+      return path.join(this.query.tsconfigDir, relativeNgModulePath);
     } else {
       return absFilePath;
     }

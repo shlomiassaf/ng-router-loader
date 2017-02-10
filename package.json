@@ -19,12 +19,12 @@
     "lazy-loading"
   ],
   "scripts": {
-    "clean:ngc": "rm -rf __codegen__",
-    "clean:docs": "rm -rf docs/docs_dist",
-    "clean:dist": "rm -rf dist",
+    "clean:ngc": "rm -rf ./__codegen__",
+    "clean:docs": "rm -rf ./docs/docs_dist",
+    "clean:dist": "rm -rf ./dist",
     "ci": "npm run test",
     "test": "npm run compile_integration && npm run build && ./node_modules/.bin/mocha dist/test spec --recursive",
-    "build": "npm run clean:dist && ./node_modules/.bin/tsc",
+    "build": "./node_modules/.bin/tsc",
     "watch": "npm run build -- -w",
     "compile_integration": "npm run clean:ngc && ./node_modules/.bin/ngc -p tsconfig.integration.json",
     "docs": "npm run clean:docs && cd docs && ../node_modules/.bin/typedoc --options typedoc.json --excludePrivate"
@@ -52,6 +52,7 @@
     "@types/mocha": "^2.2.35",
     "@types/node": "^6.0.55",
     "@types/webpack": "^2.1.0",
+    "@types/lodash": "ts2.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "rxjs": "^5.0.2",
