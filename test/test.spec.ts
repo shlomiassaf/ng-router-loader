@@ -419,6 +419,17 @@ describe('Loader', () => {
         });
     });
 
+    it('should output async-import codegen with chunk name', () => {
+      const loader = factory
+        .setOption('loader', 'async-import')
+        .toLoader();
+
+      return loader.replace(genCode('app/module-container/child-module#ChildModule?chunkName=foo'))
+        .then(mapToZero)
+        .then( (result: ReplaceResult) => {
+          expect(result.replacement).to.eql(`function() { return import('${cwdJoin('src/app/module-container/child-module/index')}' /* webpackChunkName: "foo" */)  .then( function(module) { return module['ChildModule']; } ); }`);
+        });
+    });
 
     it('should output a custom codegen', () => {
       const loader = factory.toLoader();

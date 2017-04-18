@@ -43,9 +43,11 @@ systemCodeGen['deprecated'] = () => {
   systemCodeGen['deprecated'] = () => {};
 };
 
-export const importCodeGen: LoaderCodeGen = (file: string, module: string, opts: RouterLoaderOptions) => {
+export const importCodeGen: LoaderCodeGen = (file: string, module: string, opts: RouterLoaderOptions, resourceOptions: RouteResourceOptions) => {
+  const webpackChunkName = resourceOptions.chunkName ? ` /* webpackChunkName: "${resourceOptions.chunkName}" */` : '';  
+
   const result = [
-    `function importCodeGen() { return import_('${file}')`,
+    `function importCodeGen() { return import_('${file}'${webpackChunkName})`,
     `  .then( function(module) { return module['${module}']; } ); }`
   ];
 
