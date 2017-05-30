@@ -45,7 +45,7 @@ export type  LoaderCodeGen = Function & (
   | ( (file: string, module: string, loaderOptions: RouterLoaderOptions, resourceOptions: RouteResourceOptions) => string )
   )
 
-const LOAD_CHILDREN_RE = /loadChildren[\s]*:[\s]*['|"].+?['|"]/;
+const LOAD_CHILDREN_RE = /loadChildren[\s]*:[\s]*['|"].*#{1}.*['|"]/;
 
 export class Loader {
   public query: RouterLoaderOptions;
