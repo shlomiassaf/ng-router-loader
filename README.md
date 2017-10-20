@@ -94,7 +94,7 @@ export const ROUTES: Routes = [
 ## Configuration 
 Please read [the documentation](https://shlomiassaf.github.io/ng-router-loader)
  
-# In detph 
+# In depth 
 ## @angular/router
 The `@angular/router` provides an API for deferred `NgModule` loading, this is a simple API that accepts a function that returns an `NgModule` class.
 
